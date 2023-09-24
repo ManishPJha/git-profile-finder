@@ -1,6 +1,50 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 import config from "@/config/default";
+import { humanizer } from "@/utils/helpers";
+
+type NavItem = {
+	title: string;
+	actionUrl: string;
+	isActive: boolean;
+};
+
+const items: NavItem[] = [
+	{
+		title: "home",
+		actionUrl: "/",
+		isActive: false,
+	},
+	{
+		title: "about",
+		actionUrl: "/about-us",
+		isActive: false,
+	},
+	{
+		title: "contact us",
+		actionUrl: "/contact-us",
+		isActive: false,
+	},
+];
+
+const NavItems = () => (
+	<>
+		{items.map((item, i) => {
+			return (
+				<NavLink
+					to={item.actionUrl}
+					key={i}
+					className={
+						"inline-block py-2 px-4 text-black no-underline  hover:text-yellow-300"
+					}
+				>
+					{humanizer(item.title)}
+				</NavLink>
+			);
+		})}
+	</>
+);
 
 const Header: React.FC = React.memo(() => {
 	return (
@@ -41,36 +85,13 @@ const Header: React.FC = React.memo(() => {
 					id="nav-content"
 				>
 					<ul className="list-reset lg:flex justify-end flex-1 items-center">
-						<li className="mr-3">
-							<a
-								className="inline-block py-2 px-4 text-black font-bold no-underline"
-								href="#"
-							>
-								Active
-							</a>
-						</li>
-						<li className="mr-3">
-							<a
-								className="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4"
-								href="#"
-							>
-								link
-							</a>
-						</li>
-						<li className="mr-3">
-							<a
-								className="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4"
-								href="#"
-							>
-								link
-							</a>
-						</li>
+						<NavItems />
 					</ul>
 					<button
-						id="navAction"
+						id="cta-signin"
 						className="mx-auto lg:mx-0 hover:underline text-gray-800 font-extrabold rounded mt-4 lg:mt-0 py-4 px-8 shadow opacity-75"
 					>
-						Action
+						Sign in
 					</button>
 				</div>
 			</div>
