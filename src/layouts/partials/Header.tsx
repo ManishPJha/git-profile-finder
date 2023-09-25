@@ -55,7 +55,7 @@ const NavItems = () => (
 const Header: React.FC = React.memo(() => {
 	const [showDropDown, setShowDropDown] = useState(false);
 
-	const { signinAction } = useActions();
+	const { signinAction, signoutAction } = useActions();
 
 	const isAuthenticatedUser = useReduxState(
 		(state) => state.user.isAuthenticated
@@ -65,9 +65,7 @@ const Header: React.FC = React.memo(() => {
 
 	useEffect(() => {
 		if (avatarRef.current !== null) {
-			avatarRef.current.onclick = () => {
-				return setShowDropDown(!showDropDown);
-			};
+			avatarRef.current.onclick = () => setShowDropDown(!showDropDown);
 		}
 	}, [avatarRef.current, showDropDown]);
 
@@ -140,6 +138,7 @@ const Header: React.FC = React.memo(() => {
 									<a
 										href="#"
 										className="transition-colors duration-200 block px-4 py-2 text-normal text-gray-900 rounded hover:bg-purple-500 hover:text-white"
+										onClick={signoutAction}
 									>
 										Logout
 									</a>

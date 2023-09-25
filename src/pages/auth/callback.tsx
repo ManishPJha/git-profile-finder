@@ -7,19 +7,20 @@ import { useReduxActions } from "@/hooks/useReduxActions";
 const Callback: React.FC = () => {
 	const { isAuthenticated, error, user } = useAuth0();
 
-	const navigate = useNavigate();
+	const { setProfile } = useReduxActions();
 
-	const actions = useReduxActions();
+	const navigate = useNavigate();
 
 	const profile = useMemo(() => {
 		if (isAuthenticated && user) {
 			return user;
 		}
 
-		return;
+		return null;
 	}, [isAuthenticated, user]);
 
 	useEffect(() => {
+		setProfile(null);
 		if (error) {
 			console.error(
 				"🚀 ~ file: callback.tsx:17 ~ useEffect ~ error:",
@@ -28,12 +29,12 @@ const Callback: React.FC = () => {
 		}
 
 		if (profile) {
-			actions.setProfile(profile);
+			setProfile(profile);
 			navigate("/");
 		}
 	}, [error, profile]);
 
-	return <div>Something Went Wrong!</div>;
+	return <div>Please wait redirecting you if no issue...</div>;
 };
 
 export default Callback;
