@@ -1,7 +1,13 @@
 import React from "react";
 import { RouteObject } from "react-router-dom";
 
-import { NotFoundPage, HomePage, AboutUsPage, ContactUsPage } from "@/pages/";
+import {
+	NotFoundPage,
+	CallbackPage,
+	HomePage,
+	AboutUsPage,
+	ContactUsPage,
+} from "@/pages/";
 
 import FullScreenLoader from "@/components/FullScreenLoader";
 import Base from "@/layouts/base";
@@ -37,6 +43,10 @@ export const pageRoutes: RouteObject = {
 
 export const routes: RouteObject[] = [
 	pageRoutes,
+	{
+		path: "callback",
+		element: <CallbackPage />,
+	},
 	{
 		path: "*",
 		element: <NotFoundPage />,

@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
 import config from "@/config/default";
 import { humanizer } from "@/utils/helpers";
+
+import useActions from "@/hooks/useActions";
+import { useReduxState } from "@/hooks/useReduxActions";
 
 type NavItem = {
 	title: string;
@@ -30,23 +33,44 @@ const items: NavItem[] = [
 
 const NavItems = () => (
 	<>
-		{items.map((item, i) => {
-			return (
-				<NavLink
-					to={item.actionUrl}
-					key={i}
-					className={
-						"inline-block py-2 px-4 text-black no-underline  hover:text-yellow-300"
-					}
-				>
-					{humanizer(item.title)}
-				</NavLink>
-			);
-		})}
+		{items &&
+			items.map((item, i) => {
+				return (
+					<NavLink
+						to={item.actionUrl}
+						key={i}
+						className={({ isActive }) =>
+							isActive
+								? "inline-block py-2 px-4 text-lg text-yellow-300 no-underline  hover:text-white"
+								: "inline-block py-2 px-4 text-lg text-black no-underline  hover:text-white"
+						}
+					>
+						{humanizer(item.title)}
+					</NavLink>
+				);
+			})}
 	</>
 );
 
 const Header: React.FC = React.memo(() => {
+	const [showDropDown, setShowDropDown] = useState(false);
+
+	const { signinAction } = useActions();
+
+	const isAuthenticatedUser = useReduxState(
+		(state) => state.user.isAuthenticated
+	);
+
+	const avatarRef = React.useRef<HTMLImageElement>(null);
+
+	useEffect(() => {
+		if (avatarRef.current !== null) {
+			avatarRef.current.onclick = () => {
+				return setShowDropDown(!showDropDown);
+			};
+		}
+	}, [avatarRef.current, showDropDown]);
+
 	return (
 		<nav id="header" className="w-full z-30 top-0 text-white py-1 lg:py-6">
 			<div className="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 px-2 py-2 lg:py-6">
@@ -87,12 +111,42 @@ const Header: React.FC = React.memo(() => {
 					<ul className="list-reset lg:flex justify-end flex-1 items-center">
 						<NavItems />
 					</ul>
-					<button
-						id="cta-signin"
-						className="mx-auto lg:mx-0 hover:underline text-gray-800 font-extrabold rounded mt-4 lg:mt-0 py-4 px-8 shadow opacity-75"
-					>
-						Sign in
-					</button>
+					{!isAuthenticatedUser ? (
+						<button
+							id="cta-signin"
+							className="mx-auto lg:mx-0 hover:underline text-gray-800 font-extrabold rounded mt-4 lg:mt-0 py-4 px-8 shadow opacity-75"
+							onClick={signinAction}
+						>
+							Sign in
+						</button>
+					) : (
+						<div className="relative">
+							<AvatarImageRef ref={avatarRef} />
+							{showDropDown && (
+								<div
+									className={
+										"absolute right-0 w-40 mt-2 py-2 bg-white border rounded shadow-xl"
+									}
+								>
+									<a
+										href="#"
+										className="transition-colors duration-200 block px-4 py-2 text-normal text-gray-900 rounded hover:bg-purple-500 hover:text-white"
+									>
+										Settings
+									</a>
+									<div className="py-2">
+										<hr />
+									</div>
+									<a
+										href="#"
+										className="transition-colors duration-200 block px-4 py-2 text-normal text-gray-900 rounded hover:bg-purple-500 hover:text-white"
+									>
+										Logout
+									</a>
+								</div>
+							)}
+						</div>
+					)}
 				</div>
 			</div>
 		</nav>
@@ -100,3 +154,15 @@ const Header: React.FC = React.memo(() => {
 });
 
 export default Header;
+
+export const AvatarImageRef = React.forwardRef<HTMLImageElement>(
+	(props, ref) => (
+		<img
+			ref={ref}
+			alt="avatar"
+			src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1760&q=80"
+			className="relative inline-block h-10 w-10 rounded-full border-2 border-white object-cover object-center hover:z-10 hover:border-yellow-300 hover:cursor-pointer focus:z-10"
+			{...props}
+		/>
+	)
+);

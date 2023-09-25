@@ -4,7 +4,11 @@ import CtaButton from "../buttons/CtaButton";
 
 import { HeroSectionFCProps } from "@/types/component-props";
 
+import useActions from "@/hooks/useActions";
+
 const HeroSection: React.FC<HeroSectionFCProps> = ({ title, description }) => {
+	const { searchAction } = useActions();
+
 	return (
 		<div className="container mx-auto h-screen">
 			<div className="text-center px-3 lg:px-0">
@@ -29,7 +33,10 @@ const HeroSection: React.FC<HeroSectionFCProps> = ({ title, description }) => {
 								placeholder="Enter a GitHub username"
 								className="flex-1 bg-transparent text-white focus:outline-none"
 							/>
-							<button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
+							<button
+								className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg"
+								onClick={searchAction}
+							>
 								Search
 							</button>
 						</div>
