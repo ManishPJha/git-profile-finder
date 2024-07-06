@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+        "target": "ES6",
+        "lib": ["DOM", "ESNext"],
+        "jsx": "react-jsx",
+        "module": "ESNext",
+        "moduleResolution": "Node",
+        "types": ["react", "react-dom", "@types/react", "@types/react-dom"],
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "strict": true,
+        "skipLibCheck": true,
+        "baseUrl": ".",
+        "paths": {
+            "@components/*": ["client/src/components/*"],
+            "@utils/*": ["client/src/utils/*"],
+            "@styles/*": ["client/src/styles/*"],
+            "@types/*": ["client/src/types/*"],
+            "@pages/*": ["client/src/pages/*"],
+            "@partials/*": ["client/src/partials/*"]
+        }
+    }
+}
