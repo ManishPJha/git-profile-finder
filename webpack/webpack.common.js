@@ -1,11 +1,13 @@
 const path = require('path');
-const htmlWebPackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     entry: path.resolve(__dirname, '..', 'client/src/index.tsx'),
     output: {
         path: path.resolve(__dirname, '..', 'client/dist'),
         filename: 'bundle.js',
+        publicPath: '/',
     },
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.jsx'],
@@ -16,6 +18,7 @@ module.exports = {
             '@styles': path.resolve(__dirname, '..', 'client/src/styles'),
             '@types': path.resolve(__dirname, '..', 'client/src/types'),
             '@partials': path.resolve(__dirname, '..', 'client/src/partials'),
+            '@assets': path.resolve(__dirname, '..', 'client/public/assets'),
         },
     },
     module: {
@@ -39,9 +42,12 @@ module.exports = {
         ],
     },
     plugins: [
-        new htmlWebPackPlugin({
-            template: path.resolve(__dirname, '..', 'client/src/index.html'),
+        new HtmlWebpackPlugin({
+            template: path.resolve(__dirname, '..', 'client/public/index.html'),
             filename: 'index.html',
+        }),
+        new CopyWebpackPlugin({
+            patterns: [{ from: path.resolve(__dirname, '..', 'client/public'), to: 'public' }],
         }),
     ],
     devServer: {

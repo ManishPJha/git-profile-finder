@@ -19,7 +19,8 @@
             "@styles/*": ["client/src/styles/*"],
             "@types/*": ["client/src/types/*"],
             "@pages/*": ["client/src/pages/*"],
-            "@partials/*": ["client/src/partials/*"]
+            "@partials/*": ["client/src/partials/*"],
+            "@assets/*": ["client/public/assets/*"]
         }
     }
 }

@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const path = require('path');
 
 module.exports = {
     mode: 'development',
@@ -15,6 +16,11 @@ module.exports = {
             },
         ],
         historyApiFallback: true,
+        static: {
+            directory: path.resolve(__dirname, '..', 'client/public'),
+            publicPath: '/',
+        },
+
         // related to stats
         devMiddleware: {
             writeToDisk: true,
@@ -28,7 +34,7 @@ module.exports = {
                 hash: false,
                 modules: false,
                 timings: false,
-                version: true,
+                version: false,
                 builtAt: false,
                 errors: true,
                 errorDetails: false,
