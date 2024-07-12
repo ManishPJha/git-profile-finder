@@ -20,7 +20,8 @@
             "@types/*": ["client/src/types/*"],
             "@pages/*": ["client/src/pages/*"],
             "@partials/*": ["client/src/partials/*"],
-            "@assets/*": ["client/public/assets/*"]
+            "@public/*": ["client/public/*"]
         }
-    }
+    },
+    "include": ["client/src/**/*", "client/public/**/*"]
 }

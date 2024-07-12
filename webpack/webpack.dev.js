@@ -15,7 +15,6 @@ module.exports = {
                 target: 'http://localhost:3000',
             },
         ],
-        historyApiFallback: true,
         static: {
             directory: path.resolve(__dirname, '..', 'client/public'),
             publicPath: '/',

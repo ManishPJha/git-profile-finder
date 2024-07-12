@@ -2,3 +2,5 @@ node_modules
 dist
 package-*.json
 *.env
+# Local Netlify folder
+.netlify

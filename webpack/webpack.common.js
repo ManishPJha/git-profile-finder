@@ -18,7 +18,7 @@ module.exports = {
             '@styles': path.resolve(__dirname, '..', 'client/src/styles'),
             '@types': path.resolve(__dirname, '..', 'client/src/types'),
             '@partials': path.resolve(__dirname, '..', 'client/src/partials'),
-            '@assets': path.resolve(__dirname, '..', 'client/public/assets'),
+            '@public': path.resolve(__dirname, '..', 'client/public'),
         },
     },
     module: {
@@ -29,10 +29,21 @@ module.exports = {
                 exclude: /node_modules/,
             },
             {
-                test: /\.(png|jpe?g|gif|svg)$/i,
+                test: /\.(png|jpe?g|gif)$/i,
                 type: 'asset/resource',
                 generator: {
                     filename: 'assets/[name][ext][query]',
+                },
+            },
+            {
+                test: /\.svg/,
+                use: {
+                    loader: 'svg-url-loader',
+                    options: {
+                        // make all svg images to work in IE
+                        // iesafe: true,
+                        limit: 10000,
+                    },
                 },
             },
             {
