@@ -5,7 +5,7 @@
         "jsx": "react-jsx",
         "module": "ESNext",
         "moduleResolution": "Node",
-        "types": ["react", "react-dom", "@types/react", "@types/react-dom"],
+        "types": ["react", "react-dom", "@types/react", "@types/react-dom", "node"],
         "resolveJsonModule": true,
         "isolatedModules": true,
         "esModuleInterop": true,
@@ -17,9 +17,10 @@
             "@components/*": ["client/src/components/*"],
             "@utils/*": ["client/src/utils/*"],
             "@styles/*": ["client/src/styles/*"],
-            "@types/*": ["client/src/types/*"],
+            "@_types/*": ["client/src/types/*"],
             "@pages/*": ["client/src/pages/*"],
             "@partials/*": ["client/src/partials/*"],
+            "@features/*": ["client/src/features/*"],
             "@public/*": ["client/public/*"]
         }
     },
