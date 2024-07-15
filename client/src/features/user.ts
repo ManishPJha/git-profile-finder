@@ -1,8 +1,9 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import type { IUserState } from '@_types/features/user';
+import type { IUser, IUserState } from '@_types/features/user';
 import { fetchAPI } from '@utils/api-helper';
 import { getErrorMessage } from '@utils/get-error-message';
+import { transformUserResponse } from '@utils/nomalize/user';
 
 const initState: IUserState = {
     user: null,
@@ -13,14 +14,17 @@ const initState: IUserState = {
 
 export const getUserByUserName = createAsyncThunk('getUserByUserName', async (userName: string) => {
     try {
-        const response = await fetchAPI(`/users/${userName}`);
+        const response = await fetchAPI(`users/${userName}`);
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        return data;
+
+        return transformUserResponse(data);
     } catch (error) {
-        getErrorMessage(error);
+        console.log('🚀 ~ getUserByUserName ~ error:', getErrorMessage(error));
+        throw new Error(getErrorMessage(error));
     }
 });
 
@@ -28,7 +32,7 @@ const userSlice = createSlice({
     name: 'user',
     initialState: initState,
     reducers: {
-        setUser: (state, action) => {
+        setUser: (state, action: PayloadAction<IUser>) => {
             return { ...state, user: action.payload };
         },
     },

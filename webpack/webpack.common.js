@@ -54,6 +54,10 @@ module.exports = {
         ],
     },
     plugins: [
+        // new Webpack.DefinePlugin({
+        //     // 'process.env': JSON.stringify(dotenv.parsed),
+        //     'process.env.GITHUB_ACCESS_TOKEN': JSON.stringify(process.env.GITHUB_ACCESS_TOKEN),
+        // }),
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, '..', 'client/public/index.html'),
             filename: 'index.html',

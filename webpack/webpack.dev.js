@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
+const dotenv = require('dotenv').config({ path: __dirname + '/../.env.local' });
 
 module.exports = {
     mode: 'development',
@@ -44,6 +45,7 @@ module.exports = {
     },
     plugins: [
         new webpack.DefinePlugin({
+            'process.env': JSON.stringify(dotenv.parsed),
             'process.env.name': JSON.stringify('development'),
         }),
     ],

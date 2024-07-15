@@ -1,11 +1,11 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { type PersistConfig, persistReducer, persistStore } from 'redux-persist';
+import { persistReducer, persistStore } from 'redux-persist';
 
 import storage from 'redux-persist/lib/storage';
 
 import { user } from './features/index';
 
-const persistConfig: PersistConfig<any> = {
+const persistConfig = {
     key: 'root',
     storage: storage,
     whitelist: [user.name],
@@ -16,7 +16,7 @@ const reducers = combineReducers({
     [user.name]: user.reducer,
 });
 
-const persistedReducer = persistReducer<any>(persistConfig, reducers);
+const persistedReducer = persistReducer(persistConfig, reducers);
 
 const createStore = () => {
     return configureStore({
