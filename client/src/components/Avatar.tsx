@@ -7,14 +7,14 @@ const Avatar = forwardRef<any, AvatarPropsTypes>((props, ref) => {
     const { altText, imageSrc, border, gradient, rounded, size, className } = props;
 
     const avatarCombinedClassNames = cn([
-        'w-10 h-10',
+        // 'w-10 h-10',
         'border-none',
         'bg-white',
         'transition-transform duration-200 hover:scale-110',
-        size && `w-${size} h-${size}`,
         rounded && 'rounded-full',
         border && 'border-2',
         gradient && 'gradient-to-r from-green-500 to-blue-500',
+        'h-24 w-24',
         'object-cover',
         'transition-transform duration-200 hover:scale-110',
         'group',

@@ -13,7 +13,11 @@ module.exports = {
         proxy: [
             {
                 context: ['/api'],
-                target: 'http://localhost:3000',
+                target: 'https://api.github.com',
+                changeOrigin: true, // Add this line
+                secure: false, // Add this line to disable SSL verification
+                logLevel: 'debug', // Optional, useful for debugging proxy issues
+                pathRewrite: { '^/api': '' }, // Optional, if you need to rewrite the path
             },
         ],
         static: {

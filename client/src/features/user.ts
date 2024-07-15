@@ -14,7 +14,7 @@ const initState: IUserState = {
 
 export const getUserByUserName = createAsyncThunk('getUserByUserName', async (userName: string) => {
     try {
-        const response = await fetchAPI(`users/${userName}`);
+        const response = await fetchAPI(`/api/users/${userName}`);
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -35,6 +35,7 @@ const userSlice = createSlice({
         setUser: (state, action: PayloadAction<IUser>) => {
             return { ...state, user: action.payload };
         },
+        reset: () => initState,
     },
     extraReducers: (builder) => {
         builder.addCase(getUserByUserName.pending, (state, action) => {
@@ -55,12 +56,11 @@ const userSlice = createSlice({
             };
         });
         builder.addCase(getUserByUserName.rejected, (state, action) => {
-            console.log('🚀 ~ builder.addCase ~ action:', action.error);
             return {
                 ...state,
                 isLoading: false,
                 isError: true,
-                // error: getErrorMessage(action.error),
+                error: action.error.message!,
             };
         });
     },

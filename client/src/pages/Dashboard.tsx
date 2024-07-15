@@ -1,26 +1,34 @@
 import InputSearch from '@components/InputSearch';
 import ProfileDetails from '@components/Profile-Details';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
+import { IUser } from '@_types/features/user';
 import { getUserByUserName } from '@features/user';
 import { useDispatch } from 'react-redux';
-import { useAppState } from '../hooks/useReduxActions';
+import { useAppState, useReduxActions } from '../hooks/useReduxActions';
 import { AppDispatch } from '../store';
 
 const Dashboard = () => {
     const { isLoading, isError, error, user } = useAppState((state) => state.user);
 
+    const [profile, setProfile] = useState<IUser | null>(null);
+
+    const { reset } = useReduxActions();
+
     const dispatch = useDispatch<AppDispatch>();
 
     useEffect(() => {
         dispatch(getUserByUserName('ManishPJha'));
-        console.log('API is being initialized...');
+        return () => {
+            reset();
+        };
     }, [dispatch]);
 
     useEffect(() => {
         if (user) {
             // save user data to local storage or Redux store
-            console.log('user response', JSON.stringify(user));
+            // console.log('user response', JSON.stringify(user));
+            setProfile(user);
         }
     }, [user]);
 
@@ -31,7 +39,7 @@ const Dashboard = () => {
     return (
         <div>
             <InputSearch />
-            <ProfileDetails />
+            {profile && <ProfileDetails profile={profile} />}
         </div>
     );
 };
