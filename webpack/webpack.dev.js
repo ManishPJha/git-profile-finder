@@ -1,4 +1,6 @@
 const webpack = require('webpack');
+const path = require('path');
+const dotenv = require('dotenv').config({ path: __dirname + '/../.env.local' });
 
 module.exports = {
     mode: 'development',
@@ -11,10 +13,18 @@ module.exports = {
         proxy: [
             {
                 context: ['/api'],
-                target: 'http://localhost:3000',
+                target: 'https://api.github.com',
+                changeOrigin: true, // Add this line
+                secure: false, // Add this line to disable SSL verification
+                logLevel: 'debug', // Optional, useful for debugging proxy issues
+                pathRewrite: { '^/api': '' }, // Optional, if you need to rewrite the path
             },
         ],
-        historyApiFallback: true,
+        static: {
+            directory: path.resolve(__dirname, '..', 'client/public'),
+            publicPath: '/',
+        },
+
         // related to stats
         devMiddleware: {
             writeToDisk: true,
@@ -28,7 +38,7 @@ module.exports = {
                 hash: false,
                 modules: false,
                 timings: false,
-                version: true,
+                version: false,
                 builtAt: false,
                 errors: true,
                 errorDetails: false,
@@ -39,6 +49,7 @@ module.exports = {
     },
     plugins: [
         new webpack.DefinePlugin({
+            'process.env': JSON.stringify(dotenv.parsed),
             'process.env.name': JSON.stringify('development'),
         }),
     ],

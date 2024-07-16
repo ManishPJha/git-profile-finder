@@ -1,0 +1,11 @@
+[[redirects]]
+  from = "/api/*"
+  to = "https://api.github.com/:splat"
+  status = 200
+  force = true
+  headers = { X-From = "Netlify" }
+
+[[redirects]]
+  from = "/*"
+  to = "/"
+  status = 200

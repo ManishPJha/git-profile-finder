@@ -4,6 +4,7 @@ module.exports = {
     theme: {
         extend: {
             container: {
+                center: true,
                 padding: {
                     DEFAULT: '1rem',
                     sm: '2rem',
@@ -25,6 +26,11 @@ module.exports = {
                 },
                 background: {
                     DEFAULT: '#111827',
+                },
+                gray: {
+                    DEFAULT: '#F9F9F9',
+                    light: '#374151',
+                    dark: '#9B9B9B',
                 },
             },
         },
