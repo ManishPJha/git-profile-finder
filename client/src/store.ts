@@ -3,17 +3,18 @@ import { persistReducer, persistStore } from 'redux-persist';
 
 import storage from 'redux-persist/lib/storage';
 
-import { user } from './features/index';
+import { repository, user } from './features/index';
 
 const persistConfig = {
     key: 'root',
     storage: storage,
-    whitelist: [user.name],
-    blacklist: [''],
+    whitelist: [repository.name],
+    blacklist: [user.name],
 };
 
 const reducers = combineReducers({
     [user.name]: user.reducer,
+    [repository.name]: repository.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);

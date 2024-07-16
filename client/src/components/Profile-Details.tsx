@@ -25,7 +25,7 @@ const ProfileDetails = ({ profile }: ProfileDetailsPropsTypes) => {
                                     imageSrc={profile.avatar}
                                 />
                             )}
-                            <div className="pt-4">
+                            <div className="pt-4 md:space-y-2 sm:space-y-1">
                                 <Typography variant="h1">{profile.name}</Typography>
                                 <Typography variant="p">{profile.bio}</Typography>
                                 <Typography variant="p">@{profile.username}</Typography>

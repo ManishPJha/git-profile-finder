@@ -1,8 +1,9 @@
 import InputSearch from '@components/InputSearch';
 import ProfileDetails from '@components/Profile-Details';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 
-import { IUser } from '@_types/features/user';
+import RepositoryDetails from '@components/Repository-Details';
+import { getRepositoriesByUsername } from '@features/repositories';
 import { getUserByUserName } from '@features/user';
 import { useDispatch } from 'react-redux';
 import { useAppState, useReduxActions } from '../hooks/useReduxActions';
@@ -10,8 +11,14 @@ import { AppDispatch } from '../store';
 
 const Dashboard = () => {
     const { isLoading, isError, error, user } = useAppState((state) => state.user);
+    const {
+        isLoading: isLoadingRepos,
+        isError: isErrorRepos,
+        error: errorRepos,
+        repositories,
+    } = useAppState((state) => state.repository);
 
-    const [profile, setProfile] = useState<IUser | null>(null);
+    const profile = useMemo(() => user, [user]);
 
     const { reset } = useReduxActions();
 
@@ -19,27 +26,26 @@ const Dashboard = () => {
 
     useEffect(() => {
         dispatch(getUserByUserName('ManishPJha'));
-        return () => {
-            reset();
-        };
+        dispatch(getRepositoriesByUsername('ManishPJha'));
     }, [dispatch]);
 
-    useEffect(() => {
-        if (user) {
-            // save user data to local storage or Redux store
-            // console.log('user response', JSON.stringify(user));
-            setProfile(user);
-        }
-    }, [user]);
+    if (isLoading || isLoadingRepos) return <div>Loading...</div>;
 
-    if (isLoading) return <div>Loading...</div>;
-
-    if (isError) return <div>Error: {error}</div>;
+    if (isError || isErrorRepos) return <div>Error: {error || errorRepos}</div>;
 
     return (
         <div>
-            <InputSearch />
+            <InputSearch
+                dispatch={dispatch}
+                getUserByUserName={getUserByUserName}
+                getRepositoriesByUsername={getRepositoriesByUsername}
+            />
             {profile && <ProfileDetails profile={profile} />}
+            {repositories && repositories.length > 0 ? (
+                <RepositoryDetails repositories={repositories} />
+            ) : (
+                <div>No repositories found</div>
+            )}
         </div>
     );
 };

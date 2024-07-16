@@ -1,7 +1,7 @@
-type RequestStateTypes = {
+export type RequestStateTypes = {
     isLoading: boolean;
     isError: boolean;
-    error: string | null;
+    error: Nullable;
 };
 
 export type GenericResponse<T = null> = Record<'data', T> & {
@@ -11,14 +11,14 @@ export type GenericResponse<T = null> = Record<'data', T> & {
 export interface IUser {
     id: string;
     name: string;
-    email: string | null;
+    email: Nullable;
     username: string;
     avatar: string;
     githubUrl: string;
-    company: string | null;
-    location: string | null;
-    bio: string | null;
-    twitter_username: string | null;
+    company: Nullable;
+    location: Nullable;
+    bio: Nullable;
+    twitter_username: Nullable;
     public_repos: number;
     public_gists: number;
     followers: number;
@@ -28,15 +28,16 @@ export interface IUser {
 }
 
 export interface IUserState extends RequestStateTypes {
-    user: IUser | null;
+    user: Nullable<IUser>;
+    // searchName: string;
 }
 
 export interface IAuthState {
-    user: IUser | null;
+    user: Nullable<IUser>;
     isAuthenticated: boolean;
 }
 
 export interface IAuthAction {
     type: string;
-    payload: IUser | null;
+    payload: Nullable<IUser>;
 }

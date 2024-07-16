@@ -22,3 +22,5 @@ declare module '*.gif' {
     const content: string;
     export default content as string;
 }
+
+declare type Nullable<T = string> = T | null;
