@@ -4,7 +4,9 @@
         "build": "npm run clean && webpack --config webpack/webpack.config.js --env env=prod",
         "start": "serve -s client/dist",
         "lint": "eslint . --ext .ts,.tsx --fix",
-        "clean": "rimraf client/dist"
+        "clean": "rimraf client/dist",
+        "deploy:dev": "npm run build && netlify deploy --dir=client/dist",
+        "deploy:prod": "npm run build && netlify deploy --prod --dir=client/dist"
     },
     "devDependencies": {
         "@types/node": "^20.14.10",

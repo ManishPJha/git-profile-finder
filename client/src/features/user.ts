@@ -12,21 +12,26 @@ const initState: IUserState = {
     error: '',
 };
 
-export const getUserByUserName = createAsyncThunk('getUserByUserName', async (userName: string) => {
-    try {
-        const response = await fetchAPI(`/api/users/${userName}`);
+export const getUserByUserName = createAsyncThunk(
+    'getUserByUserName',
+    async (userName: string, { dispatch }) => {
+        try {
+            const response = await fetchAPI(`/api/users/${userName}`);
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+
+            const transfomedResponse = transformUserResponse(data);
+
+            return transfomedResponse;
+        } catch (error) {
+            console.log('🚀 ~ getUserByUserName ~ error:', getErrorMessage(error));
+            throw new Error(getErrorMessage(error));
         }
-        const data = await response.json();
-
-        return transformUserResponse(data);
-    } catch (error) {
-        console.log('🚀 ~ getUserByUserName ~ error:', getErrorMessage(error));
-        throw new Error(getErrorMessage(error));
-    }
-});
+    },
+);
 
 const userSlice = createSlice({
     name: 'user',

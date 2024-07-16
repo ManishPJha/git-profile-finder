@@ -1,4 +1,5 @@
 import { RepositoryDetailsPropsTypes } from '@_types/components/Repository-Details';
+import { Link } from 'react-router-dom';
 
 const RepositoryDetails = ({ repositories }: RepositoryDetailsPropsTypes) => {
     return (
@@ -11,15 +12,13 @@ const RepositoryDetails = ({ repositories }: RepositoryDetailsPropsTypes) => {
                             <p className="text-gray-400">{repo.description}</p>
                         </div>
                         <div>
-                            {/* <a
-                                href={repo.html_url}
+                            <Link
+                                to={repo.repository_url}
                                 target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-white hover:text-gray-800"
+                                className="text-white hover:text-gray-200"
                             >
                                 View on GitHub
-                            </a> */}
-                            <span>View on GitHub</span>
+                            </Link>
                         </div>
                     </div>
                 </div>
