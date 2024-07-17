@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import type { AppDispatch, RootState } from '../store';
 
 // actions
-import { user } from '@features/index';
+import { repository, user } from '@features/index';
 
 export const useReduxActions = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -12,6 +12,7 @@ export const useReduxActions = () => {
     return bindActionCreators(
         {
             ...user.actions,
+            ...repository.actions,
         },
         dispatch,
     );

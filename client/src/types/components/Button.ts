@@ -11,4 +11,6 @@ export type ButtonPropsTypes = {
     iconPosition?: 'left' | 'right';
     loading?: boolean;
     rounded?: boolean;
+    id?: string;
+    name?: string;
 };

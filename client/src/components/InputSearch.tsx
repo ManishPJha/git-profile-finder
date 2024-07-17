@@ -5,13 +5,17 @@ import Button from './Button';
 
 // import type { InputSearchPropsTypes } from '@_types/components/InputSearch';
 
-import { useReduxActions } from '@hooks/useReduxActions';
+import { useAppState, useReduxActions } from '@hooks/useReduxActions';
 
 const InputSearch = () => {
     const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
     const [submitCount, setSubmitCount] = useState(0);
 
-    const { setSearchName, resetSearchName } = useReduxActions();
+    const {
+        paginationQuery: { currentPage },
+    } = useAppState((state) => state.repository);
+
+    const { setSearchName } = useReduxActions();
 
     const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -29,14 +33,14 @@ const InputSearch = () => {
 
     useEffect(() => {
         console.log('💛 search component is mounted...');
+        const element = window.document.querySelector('#btn-loader');
+
+        if (element && currentPage && currentPage > 1) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
 
         return () => console.log('🌊 search component is unmounted...');
     }, []);
-
-    // useEffect(() => {
-    //     console.log('🍓 ', submitCount);
-    //     if (submitCount === 0) resetSearchName();
-    // }, [submitCount]);
 
     return (
         <>

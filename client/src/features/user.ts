@@ -48,7 +48,6 @@ const userSlice = createSlice({
             return { ...state, searchName: action.payload };
         },
         resetSearchName: (state) => {
-            console.log('🍌 triggered');
             return { ...state, searchName: initState.searchName };
         },
         reset: () => initState,

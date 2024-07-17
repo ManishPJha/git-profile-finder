@@ -1,11 +1,11 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import InputSearch from '@components/InputSearch';
 import Loader from '@components/Loader';
 import ProfileDetails from '@components/Profile-Details';
 import RepositoryDetails from '@components/Repository-Details';
 import useActions from '@hooks/useActions';
-import { useAppState } from '@hooks/useReduxActions';
+import { useAppState, useReduxActions } from '@hooks/useReduxActions';
 
 const Dashboard = () => {
     const { isLoading, isError, error, user, searchName } = useAppState((state) => state.user);
@@ -14,21 +14,37 @@ const Dashboard = () => {
         isError: _isError,
         error: _error,
         repositories,
+        paginationQuery: { hasNext },
     } = useAppState((state) => state.repository);
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const pageLimit = 5;
 
     const profile = useMemo(() => user, [user]);
 
     const { getUserByUserName, getRepositoriesByUsername } = useActions();
 
+    const { resetRepository } = useReduxActions();
+
+    const handleNextPageAction = () => setCurrentPage(currentPage + 1);
+
     useEffect(() => {
         getUserByUserName(searchName);
-        getRepositoriesByUsername(searchName);
+        resetRepository();
     }, [searchName]);
 
     useEffect(() => {
-        console.log('💛 dashboard is mounted...');
+        getRepositoriesByUsername({ userName: searchName, currentPage, pageLimit });
+    }, [searchName, currentPage, pageLimit]);
 
-        return () => console.log('🌊 dashboard is unmounted...');
+    useEffect(() => {
+        console.log('💛 dashboard is mounted...');
+        setCurrentPage(1);
+        resetRepository();
+
+        return () => {
+            console.log('🌊 dashboard is unmounted...');
+        };
     }, []);
 
     if (isLoading || _isLoading) return <Loader />;
@@ -39,7 +55,11 @@ const Dashboard = () => {
         <>
             <InputSearch />
             <ProfileDetails profile={profile} />
-            <RepositoryDetails repositories={repositories} />
+            <RepositoryDetails
+                repositories={repositories}
+                hasMore={hasNext}
+                onNextPage={handleNextPageAction}
+            />
         </>
     );
 };

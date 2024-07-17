@@ -1,6 +1,8 @@
+import { useDispatch } from 'react-redux';
+
+import type { IRepositoryArgs } from '@_types/features/repositories';
 import { getRepositoriesByUsername } from '@features/repositories';
 import { getUserByUserName } from '@features/user';
-import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../store';
 
 const useActions = () => {
@@ -8,8 +10,8 @@ const useActions = () => {
 
     return {
         getUserByUserName: (userName: string) => dispatch(getUserByUserName(userName)),
-        getRepositoriesByUsername: (userName: string) =>
-            dispatch(getRepositoriesByUsername(userName)),
+        getRepositoriesByUsername: (data: IRepositoryArgs) =>
+            dispatch(getRepositoriesByUsername(data)),
     };
 };
 
