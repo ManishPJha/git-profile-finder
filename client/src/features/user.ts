@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { PURGE } from 'redux-persist';
 
 import type { IUser, IUserState } from '@_types/features/user';
 import { fetchAPI } from '@utils/api-helper';
@@ -7,26 +8,34 @@ import { transformUserResponse } from '@utils/nomalize/user';
 
 const initState: IUserState = {
     user: null,
+    searchName: 'ManishPJha',
     isLoading: false,
     isError: false,
     error: '',
 };
 
-export const getUserByUserName = createAsyncThunk('getUserByUserName', async (userName: string) => {
-    try {
-        const response = await fetchAPI(`/api/users/${userName}`);
+export const getUserByUserName = createAsyncThunk(
+    'getUserByUserName',
+    async (userName: string, { dispatch }) => {
+        try {
+            const response = await fetchAPI(`/api/users/${userName}`);
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+
+            const transfomedResponse = transformUserResponse(data);
+
+            return transfomedResponse;
+        } catch (error) {
+            console.log('🚀 ~ getUserByUserName ~ error:', getErrorMessage(error));
+            // reset username to default on error
+            setTimeout(() => dispatch({ type: 'user/resetSearchName' }), 2000);
+            throw new Error(getErrorMessage(error));
         }
-        const data = await response.json();
-
-        return transformUserResponse(data);
-    } catch (error) {
-        console.log('🚀 ~ getUserByUserName ~ error:', getErrorMessage(error));
-        throw new Error(getErrorMessage(error));
-    }
-});
+    },
+);
 
 const userSlice = createSlice({
     name: 'user',
@@ -34,6 +43,12 @@ const userSlice = createSlice({
     reducers: {
         setUser: (state, action: PayloadAction<IUser>) => {
             return { ...state, user: action.payload };
+        },
+        setSearchName: (state, action: PayloadAction<string>) => {
+            return { ...state, searchName: action.payload };
+        },
+        resetSearchName: (state) => {
+            return { ...state, searchName: initState.searchName };
         },
         reset: () => initState,
     },
@@ -63,6 +78,7 @@ const userSlice = createSlice({
                 error: action.error.message!,
             };
         });
+        builder.addCase(PURGE, () => initState);
     },
 });
 

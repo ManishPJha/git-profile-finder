@@ -1,52 +1,66 @@
-import InputSearch from '@components/InputSearch';
-import ProfileDetails from '@components/Profile-Details';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
+import InputSearch from '@components/InputSearch';
+import Loader from '@components/Loader';
+import ProfileDetails from '@components/Profile-Details';
 import RepositoryDetails from '@components/Repository-Details';
-import { getRepositoriesByUsername } from '@features/repositories';
-import { getUserByUserName } from '@features/user';
-import { useDispatch } from 'react-redux';
-import { useAppState, useReduxActions } from '../hooks/useReduxActions';
-import { AppDispatch } from '../store';
+import useActions from '@hooks/useActions';
+import { useAppState, useReduxActions } from '@hooks/useReduxActions';
 
 const Dashboard = () => {
-    const { isLoading, isError, error, user } = useAppState((state) => state.user);
+    const { isLoading, isError, error, user, searchName } = useAppState((state) => state.user);
     const {
-        isLoading: isLoadingRepos,
-        isError: isErrorRepos,
-        error: errorRepos,
+        isLoading: _isLoading,
+        isError: _isError,
+        error: _error,
         repositories,
+        paginationQuery: { hasNext },
     } = useAppState((state) => state.repository);
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const pageLimit = 5;
 
     const profile = useMemo(() => user, [user]);
 
-    const { reset } = useReduxActions();
+    const { getUserByUserName, getRepositoriesByUsername } = useActions();
 
-    const dispatch = useDispatch<AppDispatch>();
+    const { resetRepository } = useReduxActions();
+
+    const handleNextPageAction = () => setCurrentPage(currentPage + 1);
 
     useEffect(() => {
-        dispatch(getUserByUserName('ManishPJha'));
-        dispatch(getRepositoriesByUsername('ManishPJha'));
-    }, [dispatch]);
+        getUserByUserName(searchName);
+        resetRepository();
+    }, [searchName]);
 
-    if (isLoading || isLoadingRepos) return <div>Loading...</div>;
+    useEffect(() => {
+        getRepositoriesByUsername({ userName: searchName, currentPage, pageLimit });
+    }, [searchName, currentPage, pageLimit]);
 
-    if (isError || isErrorRepos) return <div>Error: {error || errorRepos}</div>;
+    useEffect(() => {
+        console.log('💛 dashboard is mounted...');
+        setCurrentPage(1);
+        resetRepository();
+
+        return () => {
+            console.log('🌊 dashboard is unmounted...');
+        };
+    }, []);
+
+    if (isLoading || _isLoading) return <Loader />;
+
+    if (isError || _isError) return <div>Error: {error || _error}</div>;
 
     return (
-        <div>
-            <InputSearch
-                dispatch={dispatch}
-                getUserByUserName={getUserByUserName}
-                getRepositoriesByUsername={getRepositoriesByUsername}
+        <>
+            <InputSearch />
+            <ProfileDetails profile={profile} />
+            <RepositoryDetails
+                repositories={repositories}
+                hasMore={hasNext}
+                onNextPage={handleNextPageAction}
             />
-            {profile && <ProfileDetails profile={profile} />}
-            {repositories && repositories.length > 0 ? (
-                <RepositoryDetails repositories={repositories} />
-            ) : (
-                <div>No repositories found</div>
-            )}
-        </div>
+        </>
     );
 };
 

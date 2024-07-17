@@ -1,16 +1,21 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import searchIcon from '@public/assets/search.svg';
 import Button from './Button';
 
-import type { InputSearchPropsTypes } from '@_types/components/InputSearch';
+// import type { InputSearchPropsTypes } from '@_types/components/InputSearch';
 
-const InputSearch = ({
-    dispatch,
-    getUserByUserName,
-    getRepositoriesByUsername,
-}: InputSearchPropsTypes) => {
+import { useAppState, useReduxActions } from '@hooks/useReduxActions';
+
+const InputSearch = () => {
     const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
+    const [submitCount, setSubmitCount] = useState(0);
+
+    const {
+        paginationQuery: { currentPage },
+    } = useAppState((state) => state.repository);
+
+    const { setSearchName } = useReduxActions();
 
     const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -20,10 +25,22 @@ const InputSearch = ({
             setErrorMessage('Please enter a username');
             return;
         }
+        setSubmitCount(submitCount + 1);
         setErrorMessage(undefined);
-        dispatch(getUserByUserName(user.value));
-        dispatch(getRepositoriesByUsername(user.value));
+        setSearchName(user.value);
+        e.currentTarget.reset();
     };
+
+    useEffect(() => {
+        console.log('💛 search component is mounted...');
+        const element = window.document.querySelector('#btn-loader');
+
+        if (element && currentPage && currentPage > 1) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        return () => console.log('🌊 search component is unmounted...');
+    }, []);
 
     return (
         <>

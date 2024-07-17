@@ -21,6 +21,7 @@
             "@pages/*": ["client/src/pages/*"],
             "@partials/*": ["client/src/partials/*"],
             "@features/*": ["client/src/features/*"],
+            "@hooks/*": ["client/src/hooks/*"],
             "@public/*": ["client/public/*"]
         }
     },

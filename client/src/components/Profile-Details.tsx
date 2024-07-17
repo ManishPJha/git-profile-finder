@@ -8,8 +8,10 @@ import type { ProfileDetailsPropsTypes } from '@_types/components/Profile-Detail
 const ProfileDetails = ({ profile }: ProfileDetailsPropsTypes) => {
     const handleViewExternalGitProfile = (e: React.SyntheticEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        window.open(`https://github.com/${profile.username}`, '_blank');
+        window.open(`https://github.com/${profile?.username}`, '_blank');
     };
+
+    if (!profile) return null;
 
     return (
         <div className="bg-gray-light p-4 mt-3">

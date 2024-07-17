@@ -1,7 +1,9 @@
 node_modules
 dist
 package-*.json
-*.env.*
+*.env
+.env.local
+.env.prod
 
 # Local Netlify folder
 .netlify

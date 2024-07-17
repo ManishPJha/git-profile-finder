@@ -8,8 +8,8 @@ import { repository, user } from './features/index';
 const persistConfig = {
     key: 'root',
     storage: storage,
-    whitelist: [repository.name],
-    blacklist: [user.name],
+    whitelist: [user.name, repository.name],
+    // blacklist: [user.name],
 };
 
 const reducers = combineReducers({

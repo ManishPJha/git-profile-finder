@@ -15,7 +15,24 @@ export interface IRepository {
     updated_at: string;
 }
 
+export type PaginationQuery = {
+    currentPage: Nullable<number>;
+    pageLimit: Nullable<number>;
+    totalPages: Nullable<number>;
+    sort: string;
+    direction: string;
+    hasNext: boolean;
+};
+
 export interface IRepositoryState extends RequestStateTypes {
     repositories: IRepository[];
     repository: Nullable<IRepository>;
+    pagination: boolean;
+    paginationQuery: PaginationQuery;
+}
+
+export interface IRepositoryArgs {
+    userName: string;
+    currentPage: number;
+    pageLimit: number;
 }
