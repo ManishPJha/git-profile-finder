@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { PURGE } from 'redux-persist';
 
 import type { IRepository, IRepositoryState, PaginationQuery } from '@_types/features/repositories';
 import { fetchAPI } from '@utils/api-helper';
@@ -25,7 +26,7 @@ const initState: IRepositoryState = {
 
 export const getRepositoriesByUsername = createAsyncThunk(
     'getRepositoriesByUsername',
-    async (userName: string, { getState }) => {
+    async (userName: string, { getState, dispatch }) => {
         try {
             const state = (await getState()) as RootState;
 
@@ -47,6 +48,8 @@ export const getRepositoriesByUsername = createAsyncThunk(
             return transformRepositoriesResponse(data);
         } catch (error) {
             console.log('🚀 ~ getRepositoriesByUsername ~ error:', getErrorMessage(error));
+            // reset username to default on error
+            // setTimeout(() => dispatch({ type: 'user/resetSearchName' }), 2000);
             throw new Error(getErrorMessage(error));
         }
     },
@@ -90,6 +93,7 @@ const repositorySlice = createSlice({
                 error: action.error.message!,
             };
         });
+        builder.addCase(PURGE, () => initState);
     },
 });
 

@@ -29,7 +29,7 @@ export interface IUser {
 
 export interface IUserState extends RequestStateTypes {
     user: Nullable<IUser>;
-    // searchName: string;
+    searchName: string;
 }
 
 export interface IAuthState {

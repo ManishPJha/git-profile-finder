@@ -1,52 +1,46 @@
-import InputSearch from '@components/InputSearch';
-import ProfileDetails from '@components/Profile-Details';
 import { useEffect, useMemo } from 'react';
 
+import InputSearch from '@components/InputSearch';
+import Loader from '@components/Loader';
+import ProfileDetails from '@components/Profile-Details';
 import RepositoryDetails from '@components/Repository-Details';
-import { getRepositoriesByUsername } from '@features/repositories';
-import { getUserByUserName } from '@features/user';
-import { useDispatch } from 'react-redux';
-import { useAppState, useReduxActions } from '../hooks/useReduxActions';
-import { AppDispatch } from '../store';
+import useActions from '@hooks/useActions';
+import { useAppState } from '@hooks/useReduxActions';
 
 const Dashboard = () => {
-    const { isLoading, isError, error, user } = useAppState((state) => state.user);
+    const { isLoading, isError, error, user, searchName } = useAppState((state) => state.user);
     const {
-        isLoading: isLoadingRepos,
-        isError: isErrorRepos,
-        error: errorRepos,
+        isLoading: _isLoading,
+        isError: _isError,
+        error: _error,
         repositories,
     } = useAppState((state) => state.repository);
 
     const profile = useMemo(() => user, [user]);
 
-    const { reset } = useReduxActions();
-
-    const dispatch = useDispatch<AppDispatch>();
+    const { getUserByUserName, getRepositoriesByUsername } = useActions();
 
     useEffect(() => {
-        dispatch(getUserByUserName('ManishPJha'));
-        dispatch(getRepositoriesByUsername('ManishPJha'));
-    }, [dispatch]);
+        getUserByUserName(searchName);
+        getRepositoriesByUsername(searchName);
+    }, [searchName]);
 
-    if (isLoading || isLoadingRepos) return <div>Loading...</div>;
+    useEffect(() => {
+        console.log('💛 dashboard is mounted...');
 
-    if (isError || isErrorRepos) return <div>Error: {error || errorRepos}</div>;
+        return () => console.log('🌊 dashboard is unmounted...');
+    }, []);
+
+    if (isLoading || _isLoading) return <Loader />;
+
+    if (isError || _isError) return <div>Error: {error || _error}</div>;
 
     return (
-        <div>
-            <InputSearch
-                dispatch={dispatch}
-                getUserByUserName={getUserByUserName}
-                getRepositoriesByUsername={getRepositoriesByUsername}
-            />
-            {profile && <ProfileDetails profile={profile} />}
-            {repositories && repositories.length > 0 ? (
-                <RepositoryDetails repositories={repositories} />
-            ) : (
-                <div>No repositories found</div>
-            )}
-        </div>
+        <>
+            <InputSearch />
+            <ProfileDetails profile={profile} />
+            <RepositoryDetails repositories={repositories} />
+        </>
     );
 };
 

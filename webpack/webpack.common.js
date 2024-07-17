@@ -19,6 +19,7 @@ module.exports = {
             '@_types': path.resolve(__dirname, '..', 'client/src/types'),
             '@partials': path.resolve(__dirname, '..', 'client/src/partials'),
             '@features': path.resolve(__dirname, '..', 'client/src/features'),
+            '@hooks': path.resolve(__dirname, '..', 'client/src/hooks'),
             '@public': path.resolve(__dirname, '..', 'client/public'),
         },
     },
@@ -68,5 +69,6 @@ module.exports = {
     ],
     devServer: {
         static: './dist',
+        historyApiFallback: true,
     },
 };

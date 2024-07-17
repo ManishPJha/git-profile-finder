@@ -1,3 +1,4 @@
+import { cn } from '@utils/cn';
 import { NavLink } from 'react-router-dom';
 
 const Header = () => {
@@ -21,12 +22,18 @@ const Header = () => {
             <nav className="nav font-semibold text-lg bg-gray-light shadow-sm shadow-white rounded-full md:px-16 sm:px-8 mt-4">
                 <ul className="flex items-center">
                     {navItems.map((item, index) => (
-                        <li
+                        <NavLink
+                            to={item.path}
                             key={index}
-                            className="p-4 md:border-b-2 border-green-500 border-opacity-0 hover:border-opacity-100 hover:text-slate-300 duration-200 cursor-pointer active"
+                            className={(state) =>
+                                cn([
+                                    'p-4 md:border-b-2 border-cyan-500 border-opacity-0 hover:border-opacity-100 hover:text-slate-300 duration-200 cursor-pointer',
+                                    state.isActive ? 'border-opacity-100' : undefined,
+                                ])
+                            }
                         >
-                            <NavLink to={item.path}>{item.label}</NavLink>
-                        </li>
+                            <li>{item.label}</li>
+                        </NavLink>
                     ))}
                 </ul>
             </nav>
