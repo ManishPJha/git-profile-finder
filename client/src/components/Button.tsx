@@ -27,7 +27,7 @@ const Button = forwardRef<any, ButtonPropsTypes>((props, ref) => {
         disabled && 'opacity-50 cursor-not-allowed',
         variant === 'primary' && 'bg-blue-500',
         variant === 'secondary' && 'bg-gray-500',
-        variant === 'tertiary' && 'bg-gray-600',
+        variant === 'tertiary' && 'bg-tertiary',
         variant === 'ghost' && 'border border-gray-500',
         className,
     ]);

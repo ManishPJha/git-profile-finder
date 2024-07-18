@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import Avatar from './Avatar';
 import Button from './Button';
 import RepositoryBriefs from './Repository-Briefs';
@@ -10,6 +11,13 @@ const ProfileDetails = ({ profile }: ProfileDetailsPropsTypes) => {
         e.preventDefault();
         window.open(`https://github.com/${profile?.username}`, '_blank');
     };
+
+    useEffect(() => {
+        console.log('💛 ProfileDetails is mounted...');
+        return () => {
+            console.log('🌊 ProfileDetails is unmounted...');
+        };
+    }, []);
 
     if (!profile) return null;
 

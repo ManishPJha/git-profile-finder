@@ -10,7 +10,6 @@ import type {
 import { fetchAPI } from '@utils/api-helper';
 import { getErrorMessage } from '@utils/get-error-message';
 import { transformRepositoriesResponse } from '@utils/nomalize/repository';
-import { RootState } from '../store';
 
 const initState: IRepositoryState = {
     repositories: [],
@@ -31,27 +30,12 @@ const initState: IRepositoryState = {
 
 export const getRepositoriesByUsername = createAsyncThunk(
     'getRepositoriesByUsername',
-    async ({ userName, currentPage, pageLimit }: IRepositoryArgs, { getState, dispatch }) => {
+    async ({ userName, currentPage, pageLimit }: IRepositoryArgs) => {
         try {
-            const state = (await getState()) as RootState;
-
-            const total_repositories = state.user.user?.public_repos as number;
+            // const total_repositories = userProfile?.public_repos || 0;
 
             const page = currentPage || 1;
             const perPage = pageLimit || 5;
-
-            const totalPages = Math.ceil(total_repositories / perPage);
-
-            const payload = {
-                currentPage: page,
-                pageLimit: perPage,
-                totalPages: totalPages,
-                sort: 'created',
-                direction: 'desc',
-                hasNext: page < totalPages,
-            };
-
-            dispatch({ type: 'repository/setPagination', payload });
 
             const response = await fetchAPI(
                 `/api/users/${userName}/repos?sort=created&direction=desc&page=${page}&per_page=${perPage}`,
@@ -60,6 +44,19 @@ export const getRepositoriesByUsername = createAsyncThunk(
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
+
+            // const totalPages = Math.ceil(total_repositories / perPage);
+
+            // const payload = {
+            //     currentPage: page,
+            //     pageLimit: perPage,
+            //     totalPages: totalPages,
+            //     sort: 'created',
+            //     direction: 'desc',
+            //     hasNext: page < totalPages,
+            // };
+
+            // dispatch({ type: 'repository/setPagination', payload });
 
             const data = await response.json();
 
