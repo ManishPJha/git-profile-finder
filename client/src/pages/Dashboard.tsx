@@ -6,6 +6,7 @@ import { useAppState, useReduxActions } from '@hooks/useReduxActions';
 
 const InputSearch = lazy(() => import('@components/InputSearch'));
 const ProfileDetails = lazy(() => import('@components/Profile-Details'));
+const Banner = lazy(() => import('@components/Banner'));
 const RepositoryDetails = lazy(() => import('@components/Repository-Details'));
 
 const Dashboard = () => {
@@ -18,7 +19,7 @@ const Dashboard = () => {
         paginationQuery: { hasNext },
     } = useAppState((state) => state.repository);
 
-    const pageLimit = 5;
+    const pageLimit = 6;
     const [currentPage, setCurrentPage] = useState(1);
 
     const profile = useMemo(() => user, [user]);
@@ -31,7 +32,6 @@ const Dashboard = () => {
 
     useEffect(() => {
         getUserByUserName(searchName);
-        // dispatch({ type: 'repository/setPagination', payload });
     }, [searchName]);
 
     useEffect(() => {
@@ -78,6 +78,12 @@ const Dashboard = () => {
             <Suspense fallback={<>Loading...</>}>
                 <InputSearch setCurrentPage={setCurrentPage} />
                 <ProfileDetails profile={profile} />
+                <Banner
+                    fullWidth
+                    justifyCenter
+                    title="All Repositories"
+                    backgroundColor="indigo-600"
+                />
                 <RepositoryDetails
                     repositories={repositories}
                     hasMore={hasNext}

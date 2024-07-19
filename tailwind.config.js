@@ -1,6 +1,42 @@
+import colors from 'tailwindcss/colors';
+
+// Extract all the color keys from the Tailwind colors
+const colorKeys = Object.keys(colors).filter((color) => typeof colors[color] === 'object');
+
+// Generate all the color classes for the safelist
+const generateColorClasses = (colors) => {
+    let classes = [];
+    colorKeys.forEach((color) => {
+        const shades = Object.keys(colors[color]);
+        shades.forEach((shade) => {
+            classes.push(`bg-${color}-${shade}`);
+            classes.push(`text-${color}-${shade}`);
+            classes.push(`shadow-${color}-${shade}`);
+            classes.push(`from-${color}-${shade}`);
+            classes.push(`to-${color}-${shade}`);
+        });
+    });
+    return classes;
+};
+
+const safelist = [
+    'bg-gradient-to-r',
+    'bg-gradient-to-l',
+    'bg-gradient-to-t',
+    'bg-gradient-to-b',
+    'bg-gradient-to-tr',
+    'bg-gradient-to-tl',
+    'bg-gradient-to-br',
+    'bg-gradient-to-bl',
+    // Add other static classes you might use
+    ...generateColorClasses(colors),
+];
+
 /** @type {import('tailwindcss').Config} */
+
 module.exports = {
     content: ['./client/src/**/*.{js,jsx,tsx}', './client/src/index.html'],
+    safelist,
     theme: {
         extend: {
             container: {

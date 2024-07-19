@@ -14,9 +14,9 @@ const RepositoryDetails = ({ repositories, hasMore, onNextPage }: RepositoryDeta
 
     return (
         <>
-            <GridView gridCols={3} gridGap={8} items={repositories} className="mb-4" />
+            <GridView gridCols={3} gridGap={4} items={repositories} className="mb-12" />
 
-            <div className="text-center">
+            <div className="text-center md:mb-12 sm:mb-8">
                 <Button id="btn-loader" variant="primary" onClick={onNextPage} disabled={!hasMore}>
                     Load More
                 </Button>

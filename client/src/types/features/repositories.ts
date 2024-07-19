@@ -11,6 +11,7 @@ export interface IRepository {
     watchersCount: number;
     repository_url: string;
     language: string;
+    topics: string[];
     created_at: string;
     updated_at: string;
 }

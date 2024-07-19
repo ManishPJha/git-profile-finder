@@ -12,6 +12,7 @@ export const transformRepositoriesResponse = (data: any): Array<IRepository> => 
         watchersCount: repo.watchers_count,
         repository_url: repo.html_url,
         language: repo.language,
+        topics: repo.topics,
         created_at: repo.created_at,
         updated_at: repo.updated_at,
     }));

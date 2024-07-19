@@ -3,7 +3,7 @@ export type ButtonPropsTypes = {
     children: React.ReactNode;
     disabled?: boolean;
     onClick?: React.MouseEventHandler<HTMLButtonElement>;
-    variant?: 'primary' | 'secondary' | 'tertiary' | 'ghost';
+    variant: 'primary' | 'secondary' | 'tertiary' | 'ghost';
     size?: 'small' | 'medium' | 'large';
     type?: 'button' | 'submit' | 'reset';
     fullWidth?: boolean;

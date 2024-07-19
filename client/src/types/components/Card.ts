@@ -14,10 +14,11 @@ export interface CardPropsTypes {
     className?: string;
     description?: Nullable;
     image?: string;
-    // redirectUrl?: string;
+    badgeText?: string;
     showTitle?: boolean;
     showDescription?: boolean;
     showImage?: boolean;
+    showBadge?: boolean;
     bgColor?: string;
     shadow?: boolean;
     shadowColor?: string;

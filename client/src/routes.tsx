@@ -1,6 +1,6 @@
 import { RouteObject } from 'react-router-dom';
 
-import { About, Dashboard, NotFound } from '@pages/index';
+import { About, Contact, Dashboard, NotFound } from '@pages/index';
 import BaseLayout from '@partials/Base';
 
 export const AppRoutes: RouteObject[] = [
@@ -16,6 +16,10 @@ export const AppRoutes: RouteObject[] = [
             {
                 path: 'about',
                 element: <About />,
+            },
+            {
+                path: 'contact',
+                element: <Contact />,
             },
         ],
     },

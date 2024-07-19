@@ -19,7 +19,7 @@ const GridView = ({
     };
 
     const gridCombinedClasses = cn(
-        'grid grid-flow-row text-neutral-600 gap-8',
+        'grid grid-flow-row text-neutral-600',
         gridCols && gridClasses[gridCols],
         className,
         gridGap ? `gap-${gridGap}` : 'gap-8',
